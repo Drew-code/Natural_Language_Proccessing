@@ -2,7 +2,7 @@
 Natural Language Proccessing Example  
 ## Introduction  
 Natural Language Proccessing, is used to classify writing and put it into groups. This example is using a dataset of text  
-messages and determining if each message is spam or a legit message.
+messages and determining if each message is spam or a legitimate message.
  
 ## Prerequisites
 1. Python 3.7 or newer  
@@ -30,24 +30,24 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
 ```  
 To download the dataset for this example, run ```nltk.download_shell() ``` and wait for the menu to appear.  
-then press "d" for download. Next type in "stopwords".  This only needs to be done once. Comment out the line after  
+Now press "d" for download. Next type in "stopwords".  This only needs to be done once. Comment out the line after  
 the dataset is downloaded.  
 
-Next you need to strip out the actual message using the line below. To check how many messeges there are in the dataset,  
+Next you need to strip out the actual message using the line below. To check how many messages there are in the dataset,  
 use ```len(messages)```  
 ```
 messages = [line.rstrip() for line in open('smsspamcollection/SMSSpamCollection')] # getting just the text lines out of the data
 
 print(len(messages)) #printing how many messages her are
 ```  
-Next call use a for loop to look at the messges. This will show you the message number as well as wheather or not this message  
+Next use a for loop to look at the messages. This will show you the message number as well as whether or not this message  
 is ham or spam.  
 ```
 for mess_no,message in enumerate(messages[:10]): #creating a for look to print the message and the no of the message
     print(mess_no,message)
     print('\n')
 ```  
-To get a cleaner look at the data, open the file as a .csv. Now you are able to get a statistical few of wheather or not  
+To get a cleaner look at the data, open the file as a .csv. Now you are able to get a statistical view of whether or not  
 the message is spam or ham.  
 ```
 messages = pd.read_csv('smsspamcollection/SMSSpamCollection',sep = '\t', #opening the data again as a csv for a data frame
@@ -56,7 +56,7 @@ messages = pd.read_csv('smsspamcollection/SMSSpamCollection',sep = '\t', #openin
 print(messages.groupby('label').describe()) # describing the stats for each label, label being ham or spam
 ```  
 Create a new column in the dataframe you just made and name it "length", showing the length of each messege.  
-After that, lets see what the new dataframe looks like by call ```.head()``` on messages.  
+After that, lets see what the new dataframe looks like by calling ```.head()``` on messages.  
 ```
 messages['length'] = messages['message'].apply(len) # creating a new column in the message data frame for number of words, naming it lenth
 
@@ -73,9 +73,9 @@ messages.hist(column='length',by='label',bins=60,figsize=(12,4)) # printing two 
 plt.show()
 ```  
 Now we need to clean all of the messages in the dataset. This will be done in a few steps. First, by removing  
-all characters that are punctuation. Second, we need to import common words in the english language. This is done  
-to help the model cut down on time. There is no reason to feed it words that do not indicate wheather or not the message is spam.  
-Next, the string has to be put back together without all of punctuation, then splitting sentence into words that we would then  
+all characters that are punctuation. Second, by importing common words in the english language. This is done  
+to help the model cut down on time. There is no reason to feed it words that do not indicate whether or not the message is spam.  
+Next, the string has to be put back together without all of punctuation, then split the sentences into words that are then  
 put into the "bag of words". All of these steps can be done with one function.  
 ```
 def text_process(mess): ##function to to the punctuation removal and removal of common words in the english langugue
@@ -89,7 +89,8 @@ To show an example of this function at work, this can be applied to the first 5 
 messages['message'].head(5).apply(text_process) #applying function to each of the top 5 messages
 ```
 Next a vector will be created for the whole dataset. This will count the occurance of each word in every message.  
-Then each message has to be transformed so it is uniform for the model to learn.  
+Then each message has to be transformed so it is uniform for the model to learn. Lastly a model needs to be put into  
+the pipline. Pipline is used to streamline this proccess.
 ```
 pipeline = Pipeline([
     ('bow',CountVectorizer(analyzer=text_process)), #this call, does everything we just did but in a much faster way
@@ -105,7 +106,7 @@ pipline.fit(msg_train,label_train) #training the new model using pipeline
 
 predictions = pipeline.predict(msg_test) #predicintg the new model
 ```
-As with most other models we are now able to use the classifcation report to analysize accuracy.
+As with most other models we are now able to use the classifcation report to analyze accuracy.
 ```
 print(classification_report(predictions,label_test)) #checking for accuracy
 
