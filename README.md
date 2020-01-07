@@ -1,5 +1,5 @@
 # Natural_Language_Proccessing
-Natural Languague Proccessing Example  
+Natural Language Proccessing Example  
 ## Introduction  
 Natural Language Proccessing, is used to classify writing and put it into groups. This example is using a dataset of text  
 messages and determining if each message is spam or a legit message.
